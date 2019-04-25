@@ -99,7 +99,7 @@ export default {
       onDismissed: 'clearError'
     })
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

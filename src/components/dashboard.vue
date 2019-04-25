@@ -10,19 +10,72 @@
                src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
                aspect-ratio="2.75"
              ></v-img>
-
              <v-card-title primary-title>
                <div>
                  <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
                  <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
                </div>
              </v-card-title>
-
              <v-card-actions>
                <v-btn flat color="orange">Share</v-btn>
                <v-btn flat color="orange">Explore</v-btn>
              </v-card-actions>
            </v-card>
+            <!--
+             Display all hair_care places returned by google api
+            -->
+            <div id = 'cardsAndMap' style="visibility: hidden">
+                <v-flex xs12  offset v-for="item in shoppingItems">
+                    <br/>
+                    <v-card >
+                        <v-card-title primary-title >
+                            <div >
+                              <h3 > {{ item.name }} </h3>
+                              <h5> {{ item.lat }} </h5>
+                              <h5> {{ item.long }} </h5>
+                              <h5> {{ item.companyAddr }} </h5>
+                              <h5> {{ item.hours }} </h5>
+                            </div>
+                        </v-card-title>
+                        <v-card-actions>
+                            <v-btn flat color="orange">Hallor At Me</v-btn>
+                            <v-btn flat color="orange">Scope Location</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-flex>
+              </div>
+            <!--
+             Display all Nearby hairdresser that is in our DB
+            -->
+            <section>
+                <v-layout row wrap v-for="hairdresser in nearbyHairdressers" :key="hairdresser.creatorId" class="mb-2">
+                  <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
+                    <v-card class="info">
+                      <v-container fluid>
+                        <v-layout row>
+                          <v-flex xs7 sm8 md9>
+                            <v-card-title primary-title>
+                              <div>
+                                <h5 class="white--text mb-0">{{ hairdresser.firstname }}</h5>
+                                    <h5 class="white--text mb-0">{{ hairdresser.lastname }}</h5>
+                                    <h3 class="white--text mb-0">{{ hairdresser.companyName }}</h3>
+                                    <h3 class="white--text mb-0">{{ hairdresser.companyAddr }}</h3>
+                                    <h5 class="white--text mb-0">{{ hairdresser.companyLat }}</h5>
+                                    <h5 class="white--text mb-0">{{ hairdresser.companyLong }}</h5>
+                                    <h5 class="white--text mb-2">{{ hairdresser.hashtags }}</h5>
+                                    <h5 class="white--text mb-0">{{ hairdresser.age }}</h5>
+                                    <h5 class="white--text mb-2">{{ lat }}</h5>
+                              </div>
+                            </v-card-title>
+                            <v-card-actions>
+                            </v-card-actions>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+            </section>
          </v-flex>
        </v-layout>
       </v-container>
@@ -33,28 +86,197 @@
 </template>
 
 <script>
+  var x ;
+  var service;//google stuff
+  var shoppingItems; 
+  var map;//google stuff
+  var infowindow;//google stuff
+  var radius = 5000;
+
+  //Dummy values that is replaced by places that Google Nearby Search returned
+  var shoppingItemsOG= [
+    {
+        name: 'Chop Shop',
+        lat: '10',
+        long: '10',
+        companyAddr : 'address',
+        hours : 'open'
+    },
+    {
+        name: 'Partners',
+        lat: '12',
+        long: '10',
+        companyAddr : 'address',
+        hours : 'open'
+    }];
+
+  /*
+     callback
+     results : places returned from google API
+     It populates the nearbyHairdressers if the corresponding hairdresser
+     ( that is returned by Google API) is present in our DB
+     It also calls createMarker for each place in results
+     */
+    function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            //empty both arrays before populating
+            shoppingItemsOG.length = 0;
+            nearbyHairdressersOG.length = 0;
+            for (var i = 0; i < results.length; i++) {
+                var place = results[i];
+                if (x != null) { //if x is not empty
+                    for (var j = 0; j < x.length; j++) {
+                        //checks if place ( google place) matches x ( heairdresser form DB) by name
+                        if(x[j].companyName == place.name){
+                            nearbyHairdressersOG.push({
+                                firstname: x[j].firstname,
+                                lastname: x[j].lastname,
+                                companyName: x[j].companyName,
+                                companyAddr: x[j].companyAddr,
+                                companyLat: x[j].companyLat,
+                                companyLong: x[j].companyLong,
+                                hashtags: x[j].hashtags,
+                                age: x[j].age
+                            });
+                        }
+                    }
+                }
+                createMarker(results[i]);
+            }
+        }
+    }
+    
+    /*
+    arePointsNear
+    This function takes 2 sets of coordinates and a radius
+    It computes whether the points are inside the radius
+    Is called in methods
+    */
+    function arePointsNear(checkPoint, centerPoint, km) {
+        var ky = 40000 / 360;
+        var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
+        var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+        var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+        return Math.sqrt(dx * dx + dy * dy) <= km;
+    }
+
+    /*
+    createMarker
+    place : a single place from google api
+    It creates a marker to be placed on the map.
+    It also populates shoppingItems ..... shopping itmes is used to store and display
+    the places google's api returns....testing purposes
+    */
+    function createMarker(place) {
+        var placeLoc = place.geometry.location;
+
+        var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+        });
+
+        shoppingItemsOG.push({  
+            name: place.name,
+            lat: place.geometry.location.lat(),
+            long: place.geometry.location.lng(),
+            companyAddr:place.vicinity,
+            hours : place.opening_hours
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(place.name);
+            infowindow.open(map, this);
+        });
+    }
+
+  //Dummy value is replaced by all Nearby hairdressers
+  var nearbyHairdressersOG = [] ;
 
   import navbar from '@/components/navbar.vue'
+
+  import { mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
     
   export default {
 
-    data: () => ({
+    name:'dashboard',
 
-      drawer: null
+    props: ['name'],
 
-    }),
+    data: function() {
+      return {
+        drawer: null,
+        mapName: this.name + "-map",
+        /*
+        Variable to store all nearby hairdresser ( places that is both in our
+        DB as well as returned in the nearby places search)
+        */
+        nearbyHairdressers :nearbyHairdressersOG,
+        shoppingItems: shoppingItemsOG,//All the places that Google Nearby Search returned
+        hairdessers: [],//Supposed to be all the hairdresssers in our DB... but only works sometimes
+      }
+    },
 
     components: {
       navbar
     },
 
     computed: {
+      ...mapGetters([
+          'address',
+          'long',
+          'lat'
+      ]),
+      //  Is supposed to call loadedHairDresser in users.js and return the
+      // list of hairdressers in the DB
+
+      // Something is wrong regarding the timing of this. It is sometimes called
+      // too late and the x variable is empty when x is called in a function above.
+
+      // EDIT : This method does not have to be here. I added this to mounted under
+      // the .autocomplete.addListener and it seems to work.
+      
+      hairdressers () {
+          return x = this.$store.getters.loadedHairdressers;
+      },
 
       userIsAuthenticated () {
         return this.$store.getters.user !== null && this.$store.getters.user !== undefined;
       }
 
-    }
+    },
+    mounted:  function() {
+
+      // Calls loadedHairdressers directly...also unsrue about the placing of this
+      this.$store.dispatch('loadHairdressers');
+      x = this.$store.getters.loadedHairdressers;
+
+      //Map Things
+      var latLong =  new google.maps.LatLng(this.lat,this.long)
+      const element = document.getElementById(this.mapName)
+
+      const options = {
+          zoom: 14,
+          center: latLong
+      }
+
+      //map is created
+      map = new google.maps.Map(element, options);
+
+      //request used to search for all nearby hairdresser
+      var request = {
+          location: latLong,
+          radius: radius,
+          type: ['hair_care']
+      };
+
+     infowindow = new google.maps.InfoWindow();
+     service = new google.maps.places.PlacesService(map);
+      //Call to API to return nearby hairdressers
+     service.nearbySearch(request, callback);
+      //Sets the map visible
+     document.getElementById('cardsAndMap').style.visibility = 'visible';
+    } 
 
   };
 </script>

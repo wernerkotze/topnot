@@ -15,7 +15,7 @@ const routes = [
   { path: '/api-example', component: apiexample },
   { path: '/signup', component: signup },
   { path: '/signin', component: signin },
-  { path: '/dashboard', component: dashboard },
+  { path: '/dashboard', component: dashboard, name:'dashboard' },
   { path: '/profile', component: profile },
   { path: '/knitterfinder', component: knitterfinder},
   { path: '/profile-new', component: profilenew}
