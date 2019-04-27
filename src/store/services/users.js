@@ -25,9 +25,9 @@ getters = {
         return hairDressersA.date > hairDressersB.date
       })
     },
-    featuredHairdressers (state, getters) {
-      return getters.loadedHairdressers.slice(0, 11)
-    },
+    // featuredHairdressers (state, getters) {
+    //   return getters.loadedHairdressers.slice(0, 11)
+    // },
     loadedHairdresser (state) {
 
       return (hairdesserId) => {
@@ -40,7 +40,7 @@ getters = {
 
 mutations = {
   setLoadedHairdressers (state, payload) {
-  state.loadedHairdressers = payload
+    state.loadedHairdressers = payload
   },
   createHairdresser (state, payload) {
     state.loadedHairdressers.push(payload)

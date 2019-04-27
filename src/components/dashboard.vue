@@ -78,8 +78,10 @@
             </section>
          </v-flex>
        </v-layout>
+
       </v-container>
     </v-content>
+    <div class="google-map" :id="mapName"></div>
     <v-footer color="indigo" app>
     </v-footer>
   </v-app>
@@ -92,6 +94,9 @@
   var map;//google stuff
   var infowindow;//google stuff
   var radius = 5000;
+
+  //Dummy value is replaced by all Nearby hairdressers
+  var nearbyHairdressersOG = [] ;
 
   //Dummy values that is replaced by places that Google Nearby Search returned
   var shoppingItemsOG= [
@@ -189,24 +194,28 @@
         });
     }
 
-  //Dummy value is replaced by all Nearby hairdressers
-  var nearbyHairdressersOG = [] ;
-
   import navbar from '@/components/navbar.vue'
 
   import { mapActions } from 'vuex'
   import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
     
   export default {
 
     name:'dashboard',
 
-    props: ['name'],
+    props: {
+      name: 'name'
+    },
 
     data: function() {
       return {
         drawer: null,
         mapName: this.name + "-map",
+        markerCoordinates: [{
+          latitude: 51.501527,
+          longitude: -0.1921837
+        }],
         /*
         Variable to store all nearby hairdresser ( places that is both in our
         DB as well as returned in the nearby places search)
@@ -221,12 +230,61 @@
       navbar
     },
 
+    methods:{
+      LocateNearby: function() {
+        x = this.$store.getters.loadedHairdressers;
+
+        let place = this.$store.getters.address;
+
+        //Sets variable of the users selected loaction
+        // this.lat = this.$store.getters.lat;
+        // this.long = this.$store.getters.long;
+        this.markerCoordinates.latitude = this.lat;
+        this.markerCoordinates.longitude = this.long;
+        
+
+        //Map Things
+        var latLong =  new google.maps.LatLng(this.markerCoordinates.latitude,this.markerCoordinates.longitude)
+        const element = document.getElementById(this.mapName)
+
+        const options = {
+            zoom: 14,
+            center: latLong
+        }
+
+        //map is created
+        map = new google.maps.Map(element, options);
+
+        //request used to search for all nearby hairdresser
+        var request = {
+            location: latLong,
+            radius: radius,
+            type: ['hair_care']
+        };
+
+        infowindow = new google.maps.InfoWindow();
+
+        service = new google.maps.places.PlacesService(map);
+        //Call to API to return nearby hairdressers
+        service.nearbySearch(request, callback);
+        //Sets the map visible
+        document.getElementById('cardsAndMap').style.visibility = 'visible';
+        
+      }
+    },
+
     computed: {
       ...mapGetters([
           'address',
           'long',
-          'lat'
+          'lat',
+          'loadedHairdressers'
       ]),
+      // ...mapState([
+      //   'address',
+      //   'long',
+      //   'lat'
+      // ]),
       //  Is supposed to call loadedHairDresser in users.js and return the
       // list of hairdressers in the DB
 
@@ -246,36 +304,11 @@
 
     },
     mounted:  function() {
-
-      // Calls loadedHairdressers directly...also unsrue about the placing of this
-      this.$store.dispatch('loadHairdressers');
-      x = this.$store.getters.loadedHairdressers;
-
-      //Map Things
-      var latLong =  new google.maps.LatLng(this.lat,this.long)
-      const element = document.getElementById(this.mapName)
-
-      const options = {
-          zoom: 14,
-          center: latLong
-      }
-
-      //map is created
-      map = new google.maps.Map(element, options);
-
-      //request used to search for all nearby hairdresser
-      var request = {
-          location: latLong,
-          radius: radius,
-          type: ['hair_care']
-      };
-
-     infowindow = new google.maps.InfoWindow();
-     service = new google.maps.places.PlacesService(map);
-      //Call to API to return nearby hairdressers
-     service.nearbySearch(request, callback);
-      //Sets the map visible
-     document.getElementById('cardsAndMap').style.visibility = 'visible';
+      //Calls loadedHairdressers directly...also unsrue about the placing of this
+      //this.$store.dispatch('loadHairdressers');
+      this.LocateNearby();
+      
+      
     } 
 
   };
