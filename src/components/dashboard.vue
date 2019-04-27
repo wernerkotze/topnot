@@ -232,6 +232,7 @@
 
     methods:{
       LocateNearby: function() {
+        this.$store.dispatch('loadHairdressers');
         x = this.$store.getters.loadedHairdressers;
 
         let place = this.$store.getters.address;
