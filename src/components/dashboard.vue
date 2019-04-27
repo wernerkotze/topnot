@@ -3,85 +3,96 @@
     <navbar/>
     <v-content>
       <v-container fluid fill-height>
-        <v-layout>
-         <v-flex xs12 sm6 offset-sm3>
-           <v-card>
-             <v-img
-               src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-               aspect-ratio="2.75"
-             ></v-img>
-             <v-card-title primary-title>
-               <div>
-                 <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
-                 <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
-               </div>
-             </v-card-title>
-             <v-card-actions>
-               <v-btn flat color="orange">Share</v-btn>
-               <v-btn flat color="orange">Explore</v-btn>
-             </v-card-actions>
-           </v-card>
-            <!--
-             Display all hair_care places returned by google api
-            -->
-            <div id = 'cardsAndMap' style="visibility: hidden">
-                <v-flex xs12  offset v-for="item in shoppingItems">
-                    <br/>
-                    <v-card >
-                        <v-card-title primary-title >
-                            <div >
-                              <h3 > {{ item.name }} </h3>
-                              <h5> {{ item.lat }} </h5>
-                              <h5> {{ item.long }} </h5>
-                              <h5> {{ item.companyAddr }} </h5>
-                              <h5> {{ item.hours }} </h5>
-                            </div>
-                        </v-card-title>
-                        <v-card-actions>
-                            <v-btn flat color="orange">Hallor At Me</v-btn>
-                            <v-btn flat color="orange">Scope Location</v-btn>
-                        </v-card-actions>
+        <v-layout justify-center>
+         <v-flex>
+              <v-container
+                fluid
+                grid-list-sm
+              >
+                <v-layout row wrap>
+                  <v-flex
+                    v-for="hairdresser in nearbyHairdressers" 
+                    :key="hairdresser.creatorId"
+                  >
+                    <v-card>
+                      <v-img
+                        src="http://wallpaperstock.net/the-beatles-minimalistic-illustration_wallpapers_43830_1600x1200.jpg"
+                        height="200px"
+                      >
+                        <v-container
+                          fill-height
+                          fluid
+                          pa-2
+                        >
+                          <v-layout fill-height>
+                            <v-flex xs12 align-end flexbox>
+                              <span class="headline white--text">{{ hairdresser.firstname }} {{ hairdresser.lastname }}</span><br>
+                              <span class="white--text">{{ hairdresser.companyName }}</span></br>
+                              <span class="white--text">{{ hairdresser.companyAddr }}</span>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+                      </v-img>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn icon>
+                          <v-icon>favorite</v-icon>
+                        </v-btn>
+                        <v-btn icon>
+                          <v-icon>bookmark</v-icon>
+                        </v-btn>
+                        <v-btn icon>
+                          <v-icon>share</v-icon>
+                        </v-btn>
+                      </v-card-actions>
                     </v-card>
-                </v-flex>
-              </div>
-            <!--
-             Display all Nearby hairdresser that is in our DB
-            -->
-            <section>
-                <v-layout row wrap v-for="hairdresser in nearbyHairdressers" :key="hairdresser.creatorId" class="mb-2">
-                  <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
-                    <v-card class="info">
-                      <v-container fluid>
-                        <v-layout row>
-                          <v-flex xs7 sm8 md9>
-                            <v-card-title primary-title>
-                              <div>
-                                <h5 class="white--text mb-0">{{ hairdresser.firstname }}</h5>
-                                    <h5 class="white--text mb-0">{{ hairdresser.lastname }}</h5>
-                                    <h3 class="white--text mb-0">{{ hairdresser.companyName }}</h3>
-                                    <h3 class="white--text mb-0">{{ hairdresser.companyAddr }}</h3>
-                                    <h5 class="white--text mb-0">{{ hairdresser.companyLat }}</h5>
-                                    <h5 class="white--text mb-0">{{ hairdresser.companyLong }}</h5>
-                                    <h5 class="white--text mb-2">{{ hairdresser.hashtags }}</h5>
-                                    <h5 class="white--text mb-0">{{ hairdresser.age }}</h5>
-                                    <h5 class="white--text mb-2">{{ lat }}</h5>
-                              </div>
-                            </v-card-title>
-                            <v-card-actions>
-                            </v-card-actions>
-                          </v-flex>
-                        </v-layout>
-                      </v-container>
+                  </v-flex>
+                  <v-flex
+                    v-for="item in shoppingItems"
+                  >
+                    <v-card>
+                      <v-img
+                        src="https://cdn.shopify.com/s/files/1/0434/4749/files/Hazard_Haircut_1_grande.jpg?v=1528904232"
+                        height="200px"
+                      >
+                        <v-container
+                          fill-height
+                          fluid
+                          pa-2
+                        >
+                          <v-layout fill-height>
+                            <v-flex xs12 align-end flexbox>
+                              <span class="headline white--text">{{ item.name }}</span><br>
+                              <span class="white--text">{{ item.companyAddr }}</span></br>
+                              <span class="white--text">{{ item.hours }}</span>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+                      </v-img>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn icon>
+                          <v-icon>favorite</v-icon>
+                        </v-btn>
+                        <v-btn icon>
+                          <v-icon>bookmark</v-icon>
+                        </v-btn>
+                        <v-btn icon>
+                          <v-icon>share</v-icon>
+                        </v-btn>
+                      </v-card-actions>
                     </v-card>
                   </v-flex>
                 </v-layout>
-            </section>
-         </v-flex>
+              </v-container>
+            
+        </v-flex>
        </v-layout>
-
       </v-container>
     </v-content>
-    <div class="google-map" :id="mapName"></div>
+    <div class="google-map" :id="mapName" hidden></div>
     <v-footer color="indigo" app>
     </v-footer>
   </v-app>
@@ -269,7 +280,7 @@
         //Call to API to return nearby hairdressers
         service.nearbySearch(request, callback);
         //Sets the map visible
-        document.getElementById('cardsAndMap').style.visibility = 'visible';
+        //document.getElementById('cardsAndMap').style.visibility = 'visible';
         
       }
     },

@@ -54,7 +54,6 @@ export default {
             onLocate: 'locate'
         })
     },
-
     mounted: function() {
 
         //API call to allow autocompletion
