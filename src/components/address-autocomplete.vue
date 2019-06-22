@@ -49,11 +49,13 @@ export default {
             lat: '',
         }
     },
+    
     methods: {
         ...mapActions({
             onLocate: 'locate'
         })
     },
+
     mounted: function() {
 
         //API call to allow autocompletion
@@ -94,6 +96,7 @@ export default {
             this.address = address;
         });
     }
+    
 };
 
 </script>

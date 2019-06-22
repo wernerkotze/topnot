@@ -1,5 +1,5 @@
 <template>
-	<v-app light>
+  <v-app light>
 		<v-toolbar class="white">
 			<v-icon>change_history</v-icon>
 			<v-toolbar-title v-text="title"></v-toolbar-title>

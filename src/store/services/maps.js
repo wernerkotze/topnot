@@ -2,7 +2,6 @@ import axios from 'axios'
 import * as firebase from 'firebase'
 import router from '@/router'
 
-
 const state = {
   address : null,
   long : null,
@@ -39,9 +38,7 @@ const mutations = {
   }
 }
 
-
 const actions = {
-
   // Might need to work on the order of excecution here...
   locate ({commit}, payload) {
     commit('setLong', payload.long);
