@@ -37,7 +37,6 @@
                 class="results-pane"
                 ref="results"
                 :request="nearbyRequest"
-                :filter="result => !result.types.includes('locality')"
             >
                 <template slot-scope="props">
                     <md-list class="md-double-line">
@@ -89,6 +88,7 @@ export default {
             if (this.searchBounds) {
                 return {
                     bounds: this.searchBounds,
+                    type: 'hair_care'
                 }
             }
         },
@@ -110,6 +110,9 @@ export default {
             this.userPosition = position
         },
     },
+    mounted() {
+        console.log(this.$refs.results);
+    }
 };
 </script>
 
