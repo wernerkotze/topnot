@@ -13,7 +13,9 @@
                 class="map"
                 :center.sync="center"
                 :zoom="12"
-                
+                @idle="onIdle"
+                 v-if="this.lat && this.long"
+
               >
                 <!-- User Position -->
                 <googlemaps-user-position @update:position="setUserPosition" />
@@ -87,14 +89,10 @@
   import { mapState } from 'vuex'
 
   export default {
-    data: function () {
+    data () {
         return {
-            center: {
-                lat: null,
-                lng: null
-            },
             searchBounds: null,
-            userPosition: null,
+            userPosition: null
         }
     },
     components: {
@@ -102,109 +100,41 @@
     },
     computed: {
         ...mapGetters([
-            'address',
-            'long',
-            'lat'
+          'address',
+          'long',
+          'lat',
         ]),
         nearbyRequest () {
             if (this.searchBounds) {
                 return {
-                    bounds: 5000,
+                    bounds: this.searchBounds,
                     type: 'hair_care'
                 }
             }
         },
+        center() {
+          return {
+            lat: this.lat,
+            lng: this.long
+          }
+        }
     },
 
-    /*
-     ******************
-     ****IMPORTANT*****
-     ******************
-     * We will start using these methods in the future
-     *
-     */
-
     methods: {
-        centerOnUser () {
-            if (this.userPosition) {
-              this.center = this.userPosition
-            }
-        },
         onIdle (map) {
             this.searchBounds = map.getBounds()
             this.$refs.results.$el.scrollTop = 0
         },
         setUserPosition (position) {
             this.userPosition = position
-        },
-        setCenter () {
-          var center = {
-            lat: this.lat,
-            lng: this.long
-          }
         }
+
     },
-    
-    mounted: function () {
-        var self = this;
-        this.setCenter() = this.center;
+    mounted () {
         console.log(this.$refs.results);
     }
-
-  //      mounted: function() {
-  //        this.getTeams().then(data => {
-  //          this.teams = data;
-  //        });
-  //      }
 };
     
-  // export default {
-
-  //   name:'dashboard',
-
-  //   props: {
-  //     name: 'name'
-  //   },
-
-  //   data: function() {
-  //     return {
-  //       drawer: null
-  //     }
-  //   },
-
-  //   components: {
-  //     navbar
-  //   },
-
-  //   methods:{
-
-
-  //   },
-
-  //   computed: {
-  //     ...mapGetters([
-  //         'address',
-  //         'long',
-  //         'lat',
-  //         // 'loadedHairdressers'
-  //     ]),
-      
-  //     // hairdressers () {
-  //     //   return x = this.$store.getters.loadedHairdressers;
-  //     // },
-
-  //     userIsAuthenticated () {
-  //       return this.$store.getters.user !== null && this.$store.getters.user !== undefined;
-  //     }
-
-  //   },
-
-  //   mounted() {
-  //     this.$store.dispatch('loadHairdressers');
-  //   },
-
-  // };
-
 </script>
 <style lang="scss" scoped>
   h1 {
