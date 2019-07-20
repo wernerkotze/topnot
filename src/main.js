@@ -9,6 +9,8 @@ import './stylus/main.styl'
 import './styles/index.scss'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@mdi/font/css/materialdesignicons.css'
+import 'vue-googlemaps/dist/vue-googlemaps.css'
+import VueGoogleMaps from 'vue-googlemaps'
 
 import axios from 'axios'
 
@@ -25,11 +27,23 @@ Vue.component('app-alert', AlertCmp)
 Vue.component('material-card', MaterialCard)
 Vue.component('helper-offset', Offset)
 
+
 // more info: https://github.com/MatteoGabriele/vue-analytics
 // Vue.use(VueAnalytics, {
 //   id: process.env.VUE_APP_GOOGLE_ANALYTICS,
 //   router
 // })
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    // Google API key
+    apiKey: 'AIzaSyBXEK2IakYa6zHX-bvvbIE7Ui6uG4qX5SM',
+    // Enable more Google Maps libraries here
+    libraries: ['places'],
+    // Use new renderer
+    useBetaRenderer: false,
+  },
+})
 
 Vue.use(Vuetify, {
   iconfont: 'mdi',
