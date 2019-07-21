@@ -11,12 +11,10 @@ import nearby from '@/components/nearby.vue'
 
 const routes = [
   { path: '*', component: landing },
-  { path: '/api-example', component: apiexample },
   { path: '/signup', component: signup },
   { path: '/signin', component: signin },
   { path: '/dashboard', component: dashboard, name:'dashboard' },
-  { path: '/profile', component: profile },
-  { path: '/nearby', component: nearby }
+  { path: '/profile', component: profile }
 ]
 
 Vue.use(VueRouter)
