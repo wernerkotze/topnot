@@ -37,6 +37,7 @@ export default {
     props: ['name'],
 
     data: function() {
+      
         return {
             title: 'topnot',
             mapName: this.name + "-map",
@@ -58,7 +59,7 @@ export default {
 
     mounted: function() {
 
-        //API call to allow autocompletion
+        // API call to allow autocompletion
         this.autocomplete = new google.maps.places.Autocomplete(
             (this.$refs.autocomplete), {
                 types: ['geocode']

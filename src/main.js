@@ -27,7 +27,6 @@ Vue.component('app-alert', AlertCmp)
 Vue.component('material-card', MaterialCard)
 Vue.component('helper-offset', Offset)
 
-
 // more info: https://github.com/MatteoGabriele/vue-analytics
 // Vue.use(VueAnalytics, {
 //   id: process.env.VUE_APP_GOOGLE_ANALYTICS,

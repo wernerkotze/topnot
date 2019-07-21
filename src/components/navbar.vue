@@ -46,16 +46,12 @@
 
 <script>
 
-// import VaRecordListItem from '@/components/VaRecordListItem.vue'
-
 export default {
 
   name: 'navbar',
 
   data: () => ({
-
     drawer: null
-      
   }),
 
   computed: {
@@ -86,19 +82,6 @@ export default {
       this.$store.dispatch('logout')
     }
   }
-
-  // components: {
-  //   VaRecordListItem
-  // },
-
-  // props: {
-  //   records: {
-  //     type: Array,
-  //     required: true
-  //   }
-  // },
-
-
 
 };
 </script>

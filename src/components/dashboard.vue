@@ -15,12 +15,10 @@
                 :zoom="12"
                 @idle="onIdle"
                  v-if="this.lat && this.long"
-
               >
                 <!-- User Position -->
                 <googlemaps-user-position @update:position="setUserPosition" />
               </googlemaps-map>
-
               <!-- Places list -->
               <googlemaps-nearby-places
                   class="results-pane"
@@ -51,7 +49,6 @@
                                 </v-layout>
                               </v-container>
                             </v-img>
-
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn icon>
