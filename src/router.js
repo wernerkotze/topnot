@@ -7,7 +7,6 @@ import apiexample from '@/components/api-example.vue'
 import signup from '@/components/signup.vue'
 import signin from '@/components/signin.vue'
 import profile from '@/components/profile.vue'
-import nearby from '@/components/nearby.vue'
 
 const routes = [
   { path: '*', component: landing },
