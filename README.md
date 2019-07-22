@@ -19,8 +19,12 @@
 
   + `npm run serve`
 
+## If the above does not work 
+
+`npm install firebase --force`
+
 ## Basic Overview
 
-The object of this application is to lower the percentage of bad haircut around the world. The application 
+The objective of this application is to lower the percentage of bad haircut around the world. The application 
 finds all available hairdressers in a 5km radius and displays the most popular personal in the area. Users 
 can find hairdressers by area, price, style etc. 

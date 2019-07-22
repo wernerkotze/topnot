@@ -9,6 +9,7 @@
                 fluid
                 grid-list-sm
               >
+
               <googlemaps-map
                 class="map"
                 :center.sync="center"
@@ -114,7 +115,24 @@
             lat: this.lat,
             lng: this.long
           }
+        },
+        matched() {
+
+          let matched = [];
+
+          this.$refs.results.forEach(factor => {
+
+              grouped[factorgroupid]['items'].push({
+                  'factornameid' : factor.factornameid,
+                  'factorvalueid': factor.factorvalueid,
+                  'factorname'   : factor.factorname,
+                  'factorvalue'  : factor.factorvalue
+              });
+
+          });
+          return mathes;
         }
+
     },
 
     methods: {

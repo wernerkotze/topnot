@@ -99,7 +99,7 @@
         onDismissed: 'clearError'
       })
     }
-  }
+  };
 </script>
 
 <style>
