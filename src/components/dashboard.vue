@@ -9,7 +9,6 @@
                 fluid
                 grid-list-sm
               >
-
               <googlemaps-map
                 class="map"
                 :center.sync="center"
@@ -70,6 +69,7 @@
               </googlemaps-nearby-places>
               </v-container>
         </v-flex>
+        {{ places }}
        </v-layout>
       </v-container>
     </v-content>
@@ -90,7 +90,9 @@
     data () {
         return {
             searchBounds: null,
-            userPosition: null
+            userPosition: null,
+            places: [],
+            matches: []
         }
     },
     components: {
@@ -102,7 +104,7 @@
           'long',
           'lat',
         ]),
-        nearbyRequest () {
+        nearbyRequest() {
             if (this.searchBounds) {
                 return {
                     bounds: this.searchBounds,
@@ -120,21 +122,15 @@
 
           let matched = [];
 
-          this.$refs.results.forEach(factor => {
-
-              grouped[factorgroupid]['items'].push({
-                  'factornameid' : factor.factornameid,
-                  'factorvalueid': factor.factorvalueid,
-                  'factorname'   : factor.factorname,
-                  'factorvalue'  : factor.factorvalue
-              });
-
+          this.places.forEach(place => {
+            // matched.push({
+            //     'name' : result.factornameid,
+            // });
           });
-          return mathes;
+          return matched;
         }
 
     },
-
     methods: {
         onIdle (map) {
             this.searchBounds = map.getBounds()
@@ -146,7 +142,12 @@
 
     },
     mounted () {
-        console.log(this.$refs.results);
+      this.$watch(() => {
+        return this.$refs.results['results']
+      },(val) => {
+        this.places = val;
+        console.log(val);
+      });
     }
 };
     
