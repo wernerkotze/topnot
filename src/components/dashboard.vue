@@ -119,9 +119,7 @@
           }
         },
         matched() {
-
           let matched = [];
-
           this.places.forEach(place => {
             // matched.push({
             //     'name' : result.factornameid,
@@ -129,7 +127,6 @@
           });
           return matched;
         }
-
     },
     methods: {
         onIdle (map) {
@@ -139,15 +136,14 @@
         setUserPosition (position) {
             this.userPosition = position
         }
-
     },
     mounted () {
-      this.$watch(() => {
-        return this.$refs.results['results']
-      },(val) => {
-        this.places = val;
-        console.log(val);
-      });
+        this.$watch(() => {
+          return this.$refs.results['results']
+        },(val) => {
+          this.places = val;
+          console.log(val);
+        });
     }
 };
     
