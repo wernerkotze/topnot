@@ -6,94 +6,62 @@
       right
     >
       <v-list dense>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-
+        <v-list-item>  
+          <v-list-item-avatar>
+             <v-img
+              v-if="isUserLoggedIn && networkOnLine"
+              class="user-picture can-hide"
+              :src="user.photoURL"
+              alt="Avatar"
+            >
+            </v-img>
+          </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>
+              Werner Kotze
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
 
+        <v-list-item
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.link">
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Contact</v-list-item-title>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar
       app
-      color="cyan"
-      dark
+      color="white"
     >
+        <v-btn icon
+          to="/home"
+        >
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+
+
+<!--       <v-list-item-avatar>
+          <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSpn1K0DuiJGSPnj3PQTFPk2SCsXK7B4K08YePvJ6GM9QVvt-gT"></v-img>
+      </v-list-item-avatar>
+      <v-toolbar-title>topnot</v-toolbar-title> -->
       <v-spacer />
-
-      <v-toolbar-title>Application</v-toolbar-title>
-
+      <v-toolbar-items>
+        <!-- <v-btn text>Register</v-btn> -->
+        <v-btn text>Sign In</v-btn>
+      </v-toolbar-items>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
-
-    <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col class="text-center">
-            <v-tooltip left>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  :href="source"
-                  icon
-                  large
-                  target="_blank"
-                  v-on="on"
-                >
-                  <v-icon large>mdi-code-tags</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Source</span>
-            </v-tooltip>
-
-            <v-tooltip right>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  icon
-                  large
-                  href="https://codepen.io/johnjleider/pen/WVbPgz"
-                  target="_blank"
-                  v-on="on"
-                >
-                  <v-icon large>mdi-codepen</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Codepen</span>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-
-    <v-footer
-      color="cyan"
-      app
-    >
-      <v-spacer />
-
-      <span class="white--text">Top Company &copy; 2019</span>
-    </v-footer>
   </v-app>
 <!--   <div class="product-detail">
     <h1>{{ product.name }}</h1>
@@ -101,6 +69,9 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import { mapGetters, mapState } from 'vuex'
+
 export default {
   props: {
     product: Object,
@@ -108,7 +79,31 @@ export default {
   },
   data: () => ({
     drawer: null,
-  })
+  }),
+  computed: {
+    ...mapGetters('authentication', ['isUserLoggedIn']),
+    ...mapState('authentication', ['user']),
+    ...mapState('app', ['networkOnLine', 'appTitle', 'appShortTitle']),
+    menuItems () {
+      let menuItems = [
+        {icon: 'mdi-scissors-cutting', title: 'Hairdressers', link: '/home'}
+      ]
+      if (this.isUserLoggedIn) {
+        menuItems = [
+          {icon: 'mdi-scissors-cutting', title: 'Hairdressers', link: '/home'},
+          {icon: 'mdi-heart-circle-outline', title: 'Favorites', link: '/favorites'},
+          {icon: 'mdi-account-circle-outline', title: 'Profile', link: '/profile'},
+          {icon: 'mdi-help-circle-outline', title: 'Help', link: '/help'}
+        ]
+      }
+      return menuItems;
+    },
+  },
+  methods: {
+    async logout() {
+      await firebase.auth().signOut()
+    }
+  }
 }; 
 </script>
 
