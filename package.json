@@ -4,29 +4,28 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test:e2e": "vue-cli-service test:e2e",
-    "test:e2e:headless": "vue-cli-service test:e2e --headless",
     "test:unit": "vue-cli-service test:unit",
-    "prettier:format-all": "prettier --write \"**/*.{vue,scss,sass,js,json}\"",
-    "prettier:check": "prettier \"**/*.{vue,scss,sass,js,json}\" --list-different",
+    "test:e2e": "vue-cli-service test:e2e",
+    "lint": "vue-cli-service lint",
+    "bundlesize": "bundlesize",
     "firebase:deploy:ci": "firebase deploy --non-interactive --token $FIREBASE_TOKEN",
-    "bundlesize": "bundlesize"
-  },
-  "engines": {
-    "npm": ">=5.5.0",
-    "node": ">=9.3.0"
+    "prettier:check": "prettier \"**/*.{vue,scss,sass,js,json}\" --list-different",
+    "prettier:format-all": "prettier --write \"**/*.{vue,scss,sass,js,json}\"",
+    "test:e2e:headless": "vue-cli-service test:e2e --headless"
   },
   "dependencies": {
+    "@mdi/font": "^3.6.95",
     "core-js": "^3.1.3",
     "firebase": "^6.0.4",
     "is_js": "^0.9.0",
     "lodash": "^4.17.15",
     "pwacompat": "^2.0.9",
     "register-service-worker": "^1.6.2",
+    "roboto-fontface": "*",
     "vue": "^2.6.10",
     "vue-head": "^2.1.1",
     "vue-router": "^3.0.6",
+    "vuetify": "^2.1.0",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
@@ -55,28 +54,11 @@
     "node-sass": "^4.12.0",
     "prerender-spa-plugin": "^3.4.0",
     "sass-loader": "^8.0.0",
+    "vue-cli-plugin-vuetify": "^2.0.2",
     "vue-template-compiler": "^2.6.10",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-merge": "^4.2.1"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/js/chunk-vendors*.js",
-      "maxSize": "125 kB"
-    },
-    {
-      "path": "./dist/js/chunk-firestore*.js",
-      "maxSize": "95 kB"
-    },
-    {
-      "path": "./dist/js/app*.js",
-      "maxSize": "15 kB"
-    },
-    {
-      "path": "./dist/js/client-chunk-*.js",
-      "maxSize": "6 kB"
-    }
-  ],
   "eslintConfig": {
     "root": true,
     "env": {
@@ -127,6 +109,28 @@
       "<rootDir>/tests/unit/setup.js"
     ]
   },
-  "readme": "ERROR: No README data found!",
-  "_id": "topnot@1.0.0"
+  "_id": "topnot@1.0.0",
+  "bundlesize": [
+    {
+      "path": "./dist/js/chunk-vendors*.js",
+      "maxSize": "125 kB"
+    },
+    {
+      "path": "./dist/js/chunk-firestore*.js",
+      "maxSize": "95 kB"
+    },
+    {
+      "path": "./dist/js/app*.js",
+      "maxSize": "15 kB"
+    },
+    {
+      "path": "./dist/js/client-chunk-*.js",
+      "maxSize": "6 kB"
+    }
+  ],
+  "engines": {
+    "npm": ">=5.5.0",
+    "node": ">=9.3.0"
+  },
+  "readme": "ERROR: No README data found!"
 }
