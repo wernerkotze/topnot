@@ -82,14 +82,14 @@ jobs:
           root: .
           paths: .
 
-  check-bundles-sizes:
-    executor: default-executor
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: 'Check bundles sizes'
-          command: npm run bundlesize
+  # check-bundles-sizes:
+  #   executor: default-executor
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - run:
+  #         name: 'Check bundles sizes'
+  #         command: npm run bundlesize
 
   deploy:
     executor: default-executor
@@ -126,9 +126,9 @@ workflows:
             - check-linter
             - run-unit-tests
             - run-e2e-tests
-      - check-bundles-sizes:
-          requires:
-            - build
+      # - check-bundles-sizes:
+      #     requires:
+      #       - build
       - deploy:
           requires:
-            - check-bundles-sizes
+            - build
