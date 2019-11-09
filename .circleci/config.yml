@@ -30,14 +30,14 @@ jobs:
           root: .
           paths: .
 
-  check-prettier:
-    executor: default-executor
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: 'Run prettier check on project files'
-          command: npm run prettier:check
+  # check-prettier:
+  #   executor: default-executor
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - run:
+  #         name: 'Run prettier check on project files'
+  #         command: npm run prettier:check
 
   check-linter:
     executor: default-executor
