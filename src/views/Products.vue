@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <nav-bar></nav-bar>
-    <div class="page-wrapper">
+    <div class="mt-4">
       <h1 class="products-page-title">Products page</h1>
       <product-list class="product-list"></product-list>
       <add-product v-if="networkOnLine"></add-product>
