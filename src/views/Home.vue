@@ -13,52 +13,55 @@
         <!-- <v-btn text>Register</v-btn> -->
         <v-btn text>Sign In</v-btn>
       </v-toolbar-items>
-      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
     </v-app-bar>
-<!--     <v-img src="@/assets/img/topnot_air.svg"
-      aspect-ratio="1"
-      class="grey lighten-2"
-      max-height="300"
-    > -->
-
-    <!-- </v-img> -->
-   
-      <section class="mt-4">
-        <v-img src="@/assets/img/topnot_explore.svg">
-          <v-layout
-            column
-            align-center
-            justify-center
-            class="mt-12"
-            
+      <v-content>
+          <v-container
+            fluid
           >
-            <!-- <h1 class="mb-2 display-1 text-left">never get another bad haircut again...</h1> -->
-            <v-text-field
-              background-color="secondary"
-              append-icon="mdi-map-search-outline"
-              class="mx-4"
-              light
-              solo-inverted
-              placeholder="Start typing"
-            ></v-text-field>
-            <v-btn
-              color="primary"
-              large
-              href="/products"
-            >
-              Find Hairdressers
-            </v-btn>
-          </v-layout>
-        </v-img>
-      </section>
-    <v-footer
+            <v-row
+              align="center"
+              justify="center"
+            > 
+              <v-col
+                cols="12"
+                sm="8"
+                md="4"
+              > 
+                <div class="mx-4"> 
+                  <v-text-field
+                    append-icon="mdi-map-search-outline"
+                    solo-inverted
+                    width="100%"
+                    placeholder="Entere delivery address"
+                  ></v-text-field>
+                </div>
+                <div class="mx-4">
+                  <v-btn
+                      color="primary"
+                      large
+                      href="/products"
+                      width="100%"
+                    >
+                      Find Hairdressers
+                  </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-container>
+            <v-img src="@/assets/img/topnot_explore.svg">
+                <!-- MORE HERE -->
+
+            </v-img>
+          </v-container>
+      </v-content>
+<!--     <v-footer
       color="white"
       app
+      elevation="12"
+      height="40"
     >
-      
-
-      <!-- <span class="black--text"> &copy; Top Company</span> -->
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -85,34 +88,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/theme/variables.scss';
 
-// .page-wrapper {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-
-//   .logo {
-//     margin-bottom: 3rem;
-//   }
-
-//   .home-page-title {
-//     text-align: center;
-//   }
-
-//   .documentation-link {
-//     display: inline-block;
-//     font-size: 1.2rem;
-//     color: #fff;
-//     background-color: #5d6788;
-//     padding: 0.8rem 1.6rem;
-//     border-radius: 4px;
-//     transition: background-color 0.1s ease;
-//     box-sizing: border-box;
-//     text-decoration: none;
-//     width: fit-content;
-//     font-weight: 500;
-//   }
-// }
 </style>
