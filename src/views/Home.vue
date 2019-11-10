@@ -11,7 +11,9 @@
       <v-spacer />
       <v-toolbar-items>
         <!-- <v-btn text>Register</v-btn> -->
-        <v-btn text>Sign In</v-btn>
+        <v-btn text
+          to="/login"
+        >Sign In</v-btn>
       </v-toolbar-items>
     </v-app-bar>
       <v-content>
@@ -51,17 +53,9 @@
           <v-container>
             <v-img src="@/assets/img/topnot_explore.svg">
                 <!-- MORE HERE -->
-
             </v-img>
           </v-container>
       </v-content>
-<!--     <v-footer
-      color="white"
-      app
-      elevation="12"
-      height="40"
-    >
-    </v-footer> -->
   </v-app>
 </template>
 

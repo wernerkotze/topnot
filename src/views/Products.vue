@@ -1,20 +1,24 @@
 <template>
-  <div class="page-wrapper">
-    <h1 class="products-page-title">Products page</h1>
-    <product-list class="product-list"></product-list>
-    <add-product v-if="networkOnLine"></add-product>
-  </div>
+  <v-app>
+    <nav-bar></nav-bar>
+    <div class="page-wrapper">
+      <h1 class="products-page-title">Products page</h1>
+      <product-list class="product-list"></product-list>
+      <add-product v-if="networkOnLine"></add-product>
+    </div>
+  </v-app>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ProductList from '@/components/ProductList'
 import AddProduct from '@/components/AddProduct'
+import NavBar from '@/components/NavBar'
 
 export default {
-  components: { ProductList, AddProduct },
+  components: { NavBar, ProductList, AddProduct },
   computed: mapState('app', ['networkOnLine'])
-}
+};
 </script>
 
 <style lang="scss" scoped>

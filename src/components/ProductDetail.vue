@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+  <v-app id="inspire">
     <v-navigation-drawer
       v-model="drawer"
       app
@@ -22,8 +22,6 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-
         <v-list-item
           v-for="item in menuItems"
           :key="item.title"
@@ -35,11 +33,8 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-
       </v-list>
     </v-navigation-drawer>
-
     <v-app-bar
       app
       color="white"
@@ -49,23 +44,13 @@
         >
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-
-
-<!--       <v-list-item-avatar>
-          <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSpn1K0DuiJGSPnj3PQTFPk2SCsXK7B4K08YePvJ6GM9QVvt-gT"></v-img>
-      </v-list-item-avatar>
-      <v-toolbar-title>topnot</v-toolbar-title> -->
       <v-spacer />
       <v-toolbar-items>
-        <!-- <v-btn text>Register</v-btn> -->
         <v-btn text>Sign In</v-btn>
       </v-toolbar-items>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
   </v-app>
-<!--   <div class="product-detail">
-    <h1>{{ product.name }}</h1>
-  </div> -->
 </template>
 
 <script>
