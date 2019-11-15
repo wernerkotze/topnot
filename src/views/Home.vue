@@ -30,12 +30,16 @@
                 md="4"
               > 
                 <div class="mx-4"> 
-                  <v-text-field
+                  <gmap-autocomplete
+                    @place_changed="setPlace"
+                  >
+                  </gmap-autocomplete>
+<!--                   <v-text-field
                     append-icon="mdi-map-search-outline"
                     solo-inverted
                     width="100%"
                     placeholder="Entere delivery address"
-                  ></v-text-field>
+                  ></v-text-field> -->
                 </div>
                 <div class="mx-4">
                   <v-btn
@@ -51,6 +55,15 @@
             </v-row>
           </v-container>
           <v-container>
+            <div class="col-md-8">
+              <GmapMap
+                :center="center"
+                :zoom="zoom"
+                map-type-id="terrain"
+                ref="map"
+              >
+              </GmapMap>
+            </div>
             <v-img src="@/assets/img/topnot_explore.svg">
                 <!-- MORE HERE -->
             </v-img>
@@ -63,7 +76,8 @@
 import { mapState } from 'vuex'
 
 export default {
-  head() {
+
+  data() {
     return {
       title: {
         inner: 'Home'
@@ -74,8 +88,33 @@ export default {
           content: `${this.appTitle} home page`,
           id: 'desc'
         }
-      ]
+      ],
+      center: {lat: 34.503441, lng: -82.650131},
+      zoom: 4,
+      infoContent: {},
+      infoWindowPos: null,
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      markers: [],
+      place: null,
+      radius: 100
     }
+  },
+  methods: {
+    setPlace (place) {
+      this.center = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      }
+      this.place = place
+      console.log(place);
+    },
   },
   computed: mapState('app', ['appTitle'])
 };
