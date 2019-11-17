@@ -32,6 +32,10 @@
                 <div class="mx-4"> 
                   <gmap-autocomplete
                     @place_changed="setPlace"
+                    class="geosuggest-input"
+                    :class="`elevation-${3}`" 
+                    placeholder="Enter address"
+
                   >
                   </gmap-autocomplete>
 <!--                   <v-text-field
@@ -56,13 +60,6 @@
           </v-container>
           <v-container>
             <div class="col-md-8">
-              <GmapMap
-                :center="center"
-                :zoom="zoom"
-                map-type-id="terrain"
-                ref="map"
-              >
-              </GmapMap>
             </div>
             <v-img src="@/assets/img/topnot_explore.svg">
                 <!-- MORE HERE -->
@@ -90,20 +87,7 @@ export default {
         }
       ],
       center: {lat: 34.503441, lng: -82.650131},
-      zoom: 4,
-      infoContent: {},
-      infoWindowPos: null,
-      infoWinOpen: false,
-      currentMidx: null,
-      infoOptions: {
-        pixelOffset: {
-          width: 0,
-          height: -35
-        }
-      },
-      markers: [],
-      place: null,
-      radius: 100
+      place: null
     }
   },
   methods: {
@@ -114,12 +98,47 @@ export default {
       }
       this.place = place
       console.log(place);
+    }
+  },
+  watch: {
+    place: {
+      handler() {
+        console.log('place changed!');
+        localStorage.setItem('place', JSON.stringify(this.place));
+      },
+      deep: true,
     },
   },
-  computed: mapState('app', ['appTitle'])
+  computed: mapState('app', ['appTitle']),
+  mounted() {
+    console.log('App mounted!');
+    if (localStorage.getItem('place')) this.place = JSON.parse(localStorage.getItem('place'));
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.geosuggest-input {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: 0;
+    padding: 25px 10px;
+    font-size: inherit;
+    height: 62px;
+    -moz-background-size: 16px;
+    -o-background-size: 16px;
+    -webkit-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    transition: all .2s linear;
+    text-align: center;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    font-weight: 400;
+    max-height: 32px;
+}
 
 </style>

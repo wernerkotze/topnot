@@ -124,12 +124,40 @@ export default {
   },
   data: () => ({
     drawer: null,
-    dense: false
+    dense: false,
+    searchBounds: 500,
+    userPosition: null,
+    places: [],
+    matches: []
   }),
   computed: {
     ...mapGetters('authentication', ['isUserLoggedIn']),
     ...mapState('authentication', ['user']),
     ...mapState('app', ['networkOnLine', 'appTitle', 'appShortTitle']),
+    nearbyRequest() {
+        if (this.searchBounds) {
+            return {
+                bounds: this.searchBounds,
+                type: 'hair_care'
+            }
+        } 
+        return {};
+    },
+    center() {
+      return {
+        lat: this.lat,
+        lng: this.long
+      }
+    },
+    // matched() {
+    //   let matched = [];
+    //   this.places.forEach(place => {
+    //     // matched.push({
+    //     //     'name' : result.factornameid,
+    //     // });
+    //   });
+    //   return matched;
+    // },
     menuItems () {
       let menuItems = [
         {icon: 'mdi-scissors-cutting', title: 'Hairdressers', link: '/home'}
@@ -148,6 +176,13 @@ export default {
   methods: {
     async logout() {
       await firebase.auth().signOut()
+    },
+    onIdle (map) {
+        this.searchBounds = map.getBounds()
+        this.$refs.results.$el.scrollTop = 0
+    },
+    setUserPosition (position) {
+        this.userPosition = position
     }
   }
 }; 
