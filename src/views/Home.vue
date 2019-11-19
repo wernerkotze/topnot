@@ -35,21 +35,14 @@
                     class="geosuggest-input"
                     :class="`elevation-${3}`" 
                     placeholder="Enter address"
-
                   >
                   </gmap-autocomplete>
-<!--                   <v-text-field
-                    append-icon="mdi-map-search-outline"
-                    solo-inverted
-                    width="100%"
-                    placeholder="Entere delivery address"
-                  ></v-text-field> -->
                 </div>
                 <div class="mx-4">
                   <v-btn
                       color="primary"
                       large
-                      @click="locate({lat, long})"
+                      @click="find"
                       width="100%"
                     >
                       Find Hairdressers
@@ -59,41 +52,15 @@
             </v-row>
           </v-container>
           <v-container>
-            <div class="col-md-8">
+            <div style="display: none">
               <gmap-map ref="mainmap"
                 :center="position"
                 :zoom="zoom"
                 :options="mapOptions"
                 map-type-id="terrain"
                 style="width: 100vw; height: 92vh"
-              >
-                <gmap-marker :position="position" icon="/static/img/streetview-icon.png" v-if="$refs && $refs.mainmap"></gmap-marker>
-                <gmap-circle :center="position" :radius="radius" options:="circleOptions" v-if="$refs && $refs.mainmap"></gmap-circle>
-              </gmap-map>
+              ></gmap-map>
             </div>
-            <div v-if="!$refs || !$refs.mainmap" class="map-layer loading">
-              <v-progress-circular indeterminate v-bind:size="70" v-bind:width="7" class="pink--text lighten-2"></v-progress-circular>
-            </div>
-            <div class="control-layer">
-              <div  class="top-con">
-                <v-chip v-for="(type, i) in alltypes" :key="i" @click="toggleType(i)" :outlined="!type.selected" class="secondary secondary--text" :class="{'white--text': type.selected}">{{type.name}}</v-chip>
-              </div>
-              <v-row column class="bottom-con">
-                <v-flex>
-                  <v-slider v-model="radius" :hint="'radius: '+radius+'m'" :persistent-hint="true" min="200" max="2000" ></v-slider>
-                </v-flex>
-                <v-flex>
-                  <v-btn rounded primary dark block class="pink lighten-2" @click="find" :disabled="type.length < 1">
-                    <span v-show="!searching">Random</span>
-                    <v-progress-circular indeterminate class="white--text" :size="20" v-show="searching"></v-progress-circular>
-                  </v-btn>
-                </v-flex>
-              </v-row>
-            </div>
-            <v-snackbar error v-model="error.status">
-              {{ error.message }}
-              <v-btn dark flat @click.native="error.status = false">Close</v-btn>
-            </v-snackbar>
             <v-img src="@/assets/img/topnot_explore.svg">
                 <!-- MORE HERE -->
             </v-img>
@@ -226,7 +193,6 @@ export default {
           vm.$store.commit('maps/updateResult',results);
           console.log(results);
           // route
-          // vm.$router.push('/userfeed/'+vm.position.lat+'/'+vm.position.lng+'/'+vm.zoom+'/');
           vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
 
         } else {
