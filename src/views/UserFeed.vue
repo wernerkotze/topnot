@@ -1,254 +1,132 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      right
-    >
-      <v-list dense>
-        <v-list-item>  
-          <v-list-item-avatar>
-             <v-img
-              v-if="isUserLoggedIn && networkOnLine"
-              class="user-picture can-hide"
-              :src="user.photoURL"
-              alt="Avatar"
-            >
-            </v-img>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              Werner Kotze
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.link">
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar
-      app
-      color="white"
-    >
-        <v-btn icon
-          to="/home"
-        >
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      <v-spacer />
-      <v-toolbar-items>
-        <v-btn text>Sign In</v-btn>
-      </v-toolbar-items>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-    </v-app-bar>
-
     <v-content>
-      <v-container fluid>
-        <v-row>
-          <v-col cols="12">
-            <v-row
-              align="center"
-              justify="center"
-              class="grey lighten-5"
-              style="height: 300px;"
-            >
-              <v-card
-                max-width="344"
-                class="mx-auto"
+      <v-container fluid fill-height>
+        <v-row justify-center>
+         <v-flex>
+              <v-container
+                fluid
               >
-                <v-list-item>
-                  <v-list-item-avatar color="grey"></v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title class="headline">Our Changing Planet</v-list-item-title>
-                    <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-                <!-- 
-                <v-img
-                  src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-                  height="194"
-                ></v-img> -->
-
-                <v-card-text>
-                  Visit ten places on our planet that are undergoing the biggest changes today.
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-btn
-                    text
-                    color="deep-purple accent-4"
+                <v-row column class="max-view" v-if="resultList && randi != -1">
+                  <gmap-map ref="resultmap"
+                    :center="resultList[randi].geometry.location"
+                    :zoom="zoom"
+                    :options="mapOptions"
+                    map-type-id="terrain"
+                    style="width: 100vw; height: 30vh"
                   >
-                    Read
-                  </v-btn>
-                  <v-btn
-                    text
-                    color="deep-purple accent-4"
-                  >
-                    Bookmark
-                  </v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                  </v-btn>
-                  <v-btn icon>
-                    <v-icon>mdi-share-variant</v-icon>
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-row>
-          </v-col>
-        </v-row>
+                    <gmap-marker :position="resultList[randi].geometry.location"></gmap-marker>
+                    <gmap-marker :position="position" icon="/static/img/streetview-icon.png"></gmap-marker>
+                  </gmap-map>
+
+                  <v-row column class="text" v-if="resultList.length > 1">
+                    <img class="place-img" :src="resultList[randi].photos && resultList[randi].photos[0] ? resultList[randi].photos[0].getUrl({'maxWidth': 256, 'maxHeight': 256}) : '/static/img/default_place.png'" alt="">
+                    <h3 class="teal--text lighten-2">{{resultList[randi].name}}</h3>
+                    <star-rating class="start-rating" :rating="resultList[randi].rating" :read-only="true" :star-size="20" :show-rating="false"></star-rating>
+                    <h5>{{resultList[randi].vicinity}}</h5>
+                  </v-row>
+
+                  <v-row column class="text" v-else>
+                    <h1 class="teal--text lighten-2">; - ;</h1>
+                    <h3 class="teal--text lighten-2">Nothing left to eat</h3>
+                    <h5>เรื่องมากชิบหาย</h5>
+                  </v-row>
+
+                  <v-row column class="btn-container">
+                    <v-btn round primary dark @click="random" class="pink lighten-2" :disabled="resultList.length <= 1">Re-random</v-btn>
+                    <v-btn round dark @click="back" class="blue-grey lighten-1">Back</v-btn>
+                  </v-row>
+
+                </v-row>
+              </v-container>
+        </v-flex>
+       </v-row>
       </v-container>
     </v-content>
-
+    <v-footer color="indigo" app>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import firebase from 'firebase/app'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
-export default {
-  props: {
-    product: Object,
-    source: String
-  },
-  data: () => ({
-    drawer: null,
-    dense: false,
-    searchBounds: 500,
-    userPosition: null,
-    places: [],
-    matches: []
-  }),
-  computed: {
-    ...mapGetters('authentication', ['isUserLoggedIn']),
-    ...mapState('authentication', ['user']),
-    ...mapState('app', ['networkOnLine', 'appTitle', 'appShortTitle']),
-    nearbyRequest() {
-        if (this.searchBounds) {
-            return {
-                bounds: this.searchBounds,
-                type: 'hair_care'
-            }
-        } 
-        return {};
+  export default {
+    data () {
+        return {
+          position: {lat: 0.0, lng: 0.0},
+          zoom: 15,
+          randi: -1,
+          mapOptions: {
+            zoomControl: true,
+            mapTypeControl: false,
+            scaleControl: true,
+            streetViewControl: false,
+            rotateControl: false,
+            fullscreenControl: false,
+          }
+        }
     },
-    center() {
-      return {
-        lat: this.lat,
-        lng: this.long
+    computed: {
+      resultList: function() {
+        return this.$store.state.resultList;
+      },
+    },
+    mounted () {
+      if(this.resultList.length == 0) {
+          this.back();
       }
-    },
-    // matched() {
-    //   let matched = [];
-    //   this.places.forEach(place => {
-    //     // matched.push({
-    //     //     'name' : result.factornameid,
-    //     // });
-    //   });
-    //   return matched;
-    // },
-    menuItems () {
-      let menuItems = [
-        {icon: 'mdi-scissors-cutting', title: 'Hairdressers', link: '/home'}
-      ]
-      if (this.isUserLoggedIn) {
-        menuItems = [
-          {icon: 'mdi-scissors-cutting', title: 'Hairdressers', link: '/home'},
-          {icon: 'mdi-heart-circle-outline', title: 'Favorites', link: '/favorites'},
-          {icon: 'mdi-account-circle-outline', title: 'Profile', link: '/profile'},
-          {icon: 'mdi-help-circle-outline', title: 'Help', link: '/help'}
-        ]
-      }
-      return menuItems;
-    },
-  },
-  methods: {
-    async logout() {
-      await firebase.auth().signOut()
-    },
-    onIdle (map) {
-        this.searchBounds = map.getBounds()
-        this.$refs.results.$el.scrollTop = 0
-    },
-    setUserPosition (position) {
-        this.userPosition = position
+
+      //Init data
+      this.position = {lat: Number(this.$route.params.lat), lng: Number(this.$route.params.lng)};
+      this.zoom = Number(this.$route.params.zoom);
+
+      this.random();
+    }
+    methods: {
+      random: function() {
+          if(this.randi > 0) {
+            //remove old random
+            this.resultList.splice(this.randi,1);
+            this.$store.commit('updateResult',this.resultList);
+          }
+
+          this.randi = Math.floor(Math.random() * this.resultList.length);
+        },
+        back: function() {
+          this.$router.push('/');
+        }
     }
   }
-}; 
+};
+    
 </script>
-
 <style lang="scss" scoped>
-  @import '@/theme/variables.scss';
-
-  .product-detail {
+  h1 {
+    text-align: center;
+  }
+  .demo {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  }
+  .panes {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .map {
+    flex: 1;
+  }
+  .results-pane {
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 400px;
+    height: calc(100vh - 64px);
+    position: relative;
+    .photo {
+        background: #eee;
+    }
   }
 </style>
-
-
-
-
-
-<!-- <template>
-
-
-  <v-card
-    max-width="344"
-    class="mx-auto"
-  >
-    <v-list-item>
-      <v-list-item-avatar color="grey"></v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title class="headline">Our Changing Planet</v-list-item-title>
-        <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-      height="194"
-    ></v-img>
-
-    <v-card-text>
-      Visit ten places on our planet that are undergoing the biggest changes today.
-    </v-card-text>
-
-    <v-card-actions>
-      <v-btn
-        text
-        color="deep-purple accent-4"
-      >
-        Read
-      </v-btn>
-      <v-btn
-        text
-        color="deep-purple accent-4"
-      >
-        Bookmark
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-share-variant</v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
-</template>
- -->

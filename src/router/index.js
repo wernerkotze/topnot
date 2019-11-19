@@ -46,7 +46,7 @@ const router = new Router({
       }
     },
     {
-      path: '/userfeed',
+      path: '/userfeed/:lat/:lng/:zoom',
       name: 'userfeed',
       component: () => 
         import(/* webpackChunkName: "client-chunk-login" */'@/views/UserFeed.vue'),
