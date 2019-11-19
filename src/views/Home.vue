@@ -76,14 +76,14 @@
             </div>
             <div class="control-layer">
               <div  class="top-con">
-                <v-chip v-for="(type, i) in alltypes" :key="i" @click="toggleType(i)" :outline="!type.selected" class="secondary secondary--text" :class="{'white--text': type.selected}">{{type.name}}</v-chip>
+                <v-chip v-for="(type, i) in alltypes" :key="i" @click="toggleType(i)" :outlined="!type.selected" class="secondary secondary--text" :class="{'white--text': type.selected}">{{type.name}}</v-chip>
               </div>
               <v-row column class="bottom-con">
                 <v-flex>
                   <v-slider v-model="radius" :hint="'radius: '+radius+'m'" :persistent-hint="true" min="200" max="2000" ></v-slider>
                 </v-flex>
                 <v-flex>
-                  <v-btn round primary dark block class="pink lighten-2" @click="find" :disabled="type.length < 1">
+                  <v-btn rounded primary dark block class="pink lighten-2" @click="find" :disabled="type.length < 1">
                     <span v-show="!searching">Random</span>
                     <v-progress-circular indeterminate class="white--text" :size="20" v-show="searching"></v-progress-circular>
                   </v-btn>
@@ -103,9 +103,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
-// import {  } from 'vuex'
+/* global google */
 
 export default {
 
@@ -155,11 +155,12 @@ export default {
     }
   },
   computed: {
-    mapState('app', ['appTitle']),
-    resultList: function() {
+    ...mapState('app', ['appTitle']),
+    resultList () {
       return this.$store.state.maps.resultList;
     },
-    zoom: function() {
+    // ...mapState('maps', ['resultList']),
+    zoom () {
       return 15 - Math.round((this.radius-800)*0.002);
     }
   },
@@ -173,7 +174,7 @@ export default {
     },
   },
   mounted() {
-    var vm = this;
+    const vm = this;
 
     this.searching = false;
 
@@ -204,28 +205,30 @@ export default {
       this.position.lng = place.geometry.location.lng();
     },
     find() {
-      this.searching = true;
-
-      //Init place service
-      var request = {
+      // Init place service
+      const request = {
         location: this.position,
         radius: this.radius,
         type: this.type
       };
 
-      let service = new google.maps.places.PlacesService(this.$refs.mainmap.$mapObject);
+      this.searching = true;
 
-      var vm = this;
+      const service = new google.maps.places.PlacesService(this.$refs.mainmap.$mapObject);
 
-      //Get place list
+      const vm = this;
+
+      // Get place list
       service.nearbySearch(request, function(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
 
           // store
-          vm.$store.maps.commit('updateResult',results);
-
+          vm.$store.commit('maps/updateResult',results);
+          console.log(results);
           // route
-          vm.$router.push('/userfeed/'+vm.position.lat+'/'+vm.position.lng+'/'+vm.zoom+'/');
+          // vm.$router.push('/userfeed/'+vm.position.lat+'/'+vm.position.lng+'/'+vm.zoom+'/');
+          vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
+
         } else {
           vm.searching = false;
           vm.error.message = 'Sad, nothing found :(';

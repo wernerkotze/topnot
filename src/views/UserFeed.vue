@@ -33,8 +33,8 @@
                   </v-row>
 
                   <v-row column class="btn-container">
-                    <v-btn round primary dark @click="random" class="pink lighten-2" :disabled="resultList.length <= 1">Re-random</v-btn>
-                    <v-btn round dark @click="back" class="blue-grey lighten-1">Back</v-btn>
+                    <v-btn rounded primary dark @click="random" class="pink lighten-2" :disabled="resultList.length <= 1">Re-random</v-btn>
+                    <v-btn rounded dark @click="back" class="blue-grey lighten-1">Back</v-btn>
                   </v-row>
 
                 </v-row>
@@ -49,7 +49,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+
+// import { mapGetters } from 'vuex'
 
   export default {
     data () {
@@ -68,38 +69,37 @@ import { mapGetters } from 'vuex'
         }
     },
     computed: {
-      resultList: function() {
-        return this.$store.state.resultList;
+      resultList () {
+        return this.$store.state.maps.resultList;
       },
+      // ...mapState('products', ['products']),
     },
     mounted () {
-      if(this.resultList.length == 0) {
+      if(this.resultList.length === 0) {
           this.back();
       }
 
-      //Init data
+      // Init data
       this.position = {lat: Number(this.$route.params.lat), lng: Number(this.$route.params.lng)};
       this.zoom = Number(this.$route.params.zoom);
 
       this.random();
-    }
+    },
     methods: {
-      random: function() {
+      random () {
           if(this.randi > 0) {
-            //remove old random
+            // remove old random
             this.resultList.splice(this.randi,1);
-            this.$store.commit('updateResult',this.resultList);
+            this.$store.commit('maps/updateResult',this.resultList);
           }
 
           this.randi = Math.floor(Math.random() * this.resultList.length);
         },
-        back: function() {
+        back () {
           this.$router.push('/');
         }
     }
-  }
-};
-    
+  };    
 </script>
 <style lang="scss" scoped>
   h1 {
