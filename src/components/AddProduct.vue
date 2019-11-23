@@ -30,7 +30,7 @@ export default {
     ...mapMutations('products', ['setProductNameToCreate']),
     ...mapActions('products', ['triggerAddProductAction'])
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

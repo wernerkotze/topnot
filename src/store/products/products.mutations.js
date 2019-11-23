@@ -1,4 +1,21 @@
+import router from '@/router/index'
+
 export default {
+
+  setAddress (state, payload) {
+    state.address = payload
+  },
+  setLong (state, payload) {
+    state.long = payload
+  },
+  setLat (state, payload) {
+    state.lat = payload
+  },
+  setRoute () {
+    router.push({
+      name:'userfeed'
+    })
+  },
   /* Product input name */
   setProductNameToCreate: (state, productNameToCreate) =>
     (state.productNameToCreate = productNameToCreate),

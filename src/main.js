@@ -1,5 +1,6 @@
 import Vue from 'vue'
-
+import * as VueGoogleMaps from 'vue2-google-maps'
+import VueLocalStorage from 'vue-localstorage'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -15,6 +16,16 @@ import '@mdi/font/css/materialdesignicons.css'
 
 Vue.config.productionTip = false
 
+Vue.use(VueLocalStorage)
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyBXEK2IakYa6zHX-bvvbIE7Ui6uG4qX5SM',
+    libraries: 'places,geometry',
+    v: 3
+  }
+})
+
 new Vue({
   router,
   store,
@@ -23,8 +34,7 @@ new Vue({
 }).$mount('#app')
 
 console.log(`
-🍱 This app was bootstrapped with bento-starter 🍱
+🏢 Powered by Top Company 🏢
 
-👉 https://bento-starter.netlify.com/
-
+👉 https://topcompany.io/
 `)
