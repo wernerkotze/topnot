@@ -88,6 +88,17 @@
                               >
                               </gmap-autocomplete>
                             </v-col>
+                            <v-col cols="12" sm="6">
+                              <v-select
+                                v-model="form.company"
+                                :items="places"
+                                :rules="rules.places"
+                                color="pink"
+                                label="Company"
+                                required
+                                filled
+                              ></v-select>
+                            </v-col>
                             <v-col cols="12">
                               <v-checkbox
                                 v-model="form.terms"
@@ -181,10 +192,12 @@
         favoriteAnimal: '',
         age: null,
         terms: false,
+        company: ''
       }
 
       return {
         form: defaultForm,
+        places: [],
         rules: {
           age: [
             val => val < 10 || `I don't believe you!`,
@@ -297,13 +310,19 @@
 
         const vm = this;
 
+        const placesArr = [];
+
         // Get place list
-        service.nearbySearch(request, function(results, status) {
+        service.nearbySearch(request, function(results, status, pagination) {
           if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
 
             // store
             vm.$store.commit('maps/updateResult',results);
-            console.log(results);
+
+            results.forEach(function(result){
+              placesArr.push(result.name);
+            });
+
             // route
             // vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
 
@@ -312,7 +331,16 @@
             vm.error.message = 'Sad, nothing found :(';
             vm.error.status = true;
           }
+
+          if (pagination.hasNextPage) {
+            setTimeout(function(){ pagination.nextPage() }, 2000);
+          }
+
         });
+
+        this.places = placesArr;
+
+
       }
     },
   };
