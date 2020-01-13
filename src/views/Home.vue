@@ -89,7 +89,7 @@ export default {
         }
       ],
       position: {lat: 0.0, lng: 0.0},
-      radius: 800,
+      radius: 1000,
       type: ['hair_care'],
       mapOptions: {
         zoomControl: false,
@@ -185,13 +185,16 @@ export default {
 
       const vm = this;
 
+      const placesArr = [];
+
       // Get place list
-      service.nearbySearch(request, function(results, status) {
+      service.nearbySearch(request, function(results, status, pagination) {
         if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
 
-          // store
-          vm.$store.commit('maps/updateResult',results);
-          console.log(results);
+          results.forEach(function(result){
+            placesArr.push(result);
+          });
+
           // route
           vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
 
@@ -200,6 +203,15 @@ export default {
           vm.error.message = 'Sad, nothing found :(';
           vm.error.status = true;
         }
+
+        if (pagination.hasNextPage) {
+          setTimeout(function(){ pagination.nextPage() }, 1000);
+        } else {
+          // store
+          vm.$store.commit('maps/updateResult', placesArr);
+          console.log(placesArr);
+        }
+
       });
     }
   },
