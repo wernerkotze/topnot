@@ -216,11 +216,8 @@ export default {
         if (pagination.hasNextPage) {
           setTimeout(function(){ pagination.nextPage() }, 200);
         } else {
-          // me.isLoading = false;
           vm.isLoading = false;
-          // store
           vm.$store.commit('maps/updateResult', placesArr);
-          // route
           vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
           console.log(placesArr);
         }
