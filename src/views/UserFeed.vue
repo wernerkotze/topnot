@@ -15,11 +15,6 @@
                                     class="grey lighten-5"
                                     style="height: 300px;"
                                   > 
-                                    <atom-spinner
-                                      :animation-duration="1000"
-                                      :size="60"
-                                      :color="'#ff1d5e'"
-                                    />
                                     <v-card
                                       max-width="344"
                                       class="mx-auto mb-4"
@@ -83,10 +78,8 @@
 <script>
 
 // import { mapGetters } from 'vuex' 
-import {AtomSpinner} from 'epic-spinners'
   
   export default {
-    components: {  AtomSpinner },
     data () {
         return {
           position: {lat: 0.0, lng: 0.0},
