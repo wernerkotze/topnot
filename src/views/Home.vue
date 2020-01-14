@@ -50,6 +50,10 @@
                 </div>
               </v-col>
             </v-row>
+            <loading :active.sync="isLoading" 
+              :can-cancel="false" 
+              :is-full-page="fullPage">  
+            </loading>
           </v-container>
           <v-container>
             <div style="display: none">
@@ -71,11 +75,15 @@
 
 <script>
 import { mapState } from 'vuex'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 /* global google */
 
 export default {
-
+  components: {
+    Loading
+  },
   data() {
     return {
       title: {
@@ -89,6 +97,8 @@ export default {
         }
       ],
       position: {lat: 0.0, lng: 0.0},
+      isLoading: false,
+      fullPage: true,
       radius: 1000,
       type: ['hair_care'],
       mapOptions: {
@@ -180,6 +190,7 @@ export default {
       };
 
       this.searching = true;
+      this.isLoading = true;
 
       const service = new google.maps.places.PlacesService(this.$refs.mainmap.$mapObject);
 
@@ -189,14 +200,12 @@ export default {
 
       // Get place list
       service.nearbySearch(request, function(results, status, pagination) {
+
         if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
 
           results.forEach(function(result){
             placesArr.push(result);
           });
-
-          // route
-          vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
 
         } else {
           vm.searching = false;
@@ -205,10 +214,11 @@ export default {
         }
 
         if (pagination.hasNextPage) {
-          setTimeout(function(){ pagination.nextPage() }, 1000);
+          setTimeout(function(){ pagination.nextPage() }, 200);
         } else {
-          // store
+          vm.isLoading = false;
           vm.$store.commit('maps/updateResult', placesArr);
+          vm.$router.push(`/userfeed/${vm.position.lat}/${vm.position.lng}/${vm.zoom}/`);
           console.log(placesArr);
         }
 
