@@ -1,5 +1,3 @@
-import router from '@/router/index'
-
 export default {
 
   /* User input detail */

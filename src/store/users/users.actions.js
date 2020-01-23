@@ -1,13 +1,13 @@
-import UsersDB from '@/firebase/users-db'
+import UsersDetailDB from '@/firebase/users-detail-db'
 
 export default {
   /**
    * Fetch products of current loggedin user
    */
   getUsers: async ({ rootState, commit }) => {
-    const UsersDB = new UsersDB(rootState.authentication.user.id)
+    const UsersDetailDB = new UsersDetailDB(rootState.authentication.user.id)
 
-    const users = await UsersDB.readAll()
+    const users = await UsersDetailDB.readAll()
     commit('setUsers', users)
   },
 
@@ -15,10 +15,10 @@ export default {
    * Create a product for current loggedin user
    */
   createUser: async ({ commit, rootState }, user) => {
-    const UsersDB = new UsersDB(rootState.authentication.user.id)
+    const UsersDetailDB = new UsersDetailDB(rootState.authentication.user.id)
 
     commit('setUserCreationPending', true)
-    const createdUser = await UsersDB.create(user)
+    const createdUser = await UsersDetailDB.create(user)
     commit('addUser', createdUser)
     commit('setUserCreationPending', false)
   },

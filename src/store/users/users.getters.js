@@ -4,7 +4,7 @@ export default {
   /**
    * Check if a user has deletion pending
    */
-  isUserDeletionPending: state => productId =>
+  isUserDeletionPending: state => userId =>
     state.UserDeletionPending.includes(userId),
 
   /**
