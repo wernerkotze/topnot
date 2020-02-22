@@ -4,7 +4,7 @@
     <p v-if="users.detail && !users.detail.length" class="infos-label">
       You don't have any product yet
     </p>
-    <product-item
+   <!-- <product-item
       v-for="(user, index) in users"
       :key="user.id"
       class="user-row"
@@ -13,8 +13,17 @@
       :disable-actions="!networkOnLine"
       :data="user"
       @deleteUser="deleteUserDetail"
-    ></product-item>
-    <user-item></user-item>
+    ></product-item>-->
+    <user-item
+     v-for="(user, index) in users.detail"
+      :key="user.id"
+      class="user-row"
+      :index="index"
+      :is-user-deletion-pending="isUserDeletionPending(user.id)"
+      :disable-actions="!networkOnLine"
+      :data="user"
+      @deleteUser="deleteUserDetail"
+    ></user-item>
   </div>
 </template>
 

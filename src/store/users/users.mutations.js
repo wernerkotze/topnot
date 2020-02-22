@@ -5,7 +5,7 @@ export default {
     (state.userDetailToCreate = userDetailToCreate),
 
   /* Products */
-  setUsers: (state, users) => (state.users = users),
+  setUserDetail: (state, users) => (state.users = users),
   addUserDetail: (state, user) => state.users.push(user),
   removeProductById: (state, productId) => {
     const index = state.products.findIndex(product => product.id === productId)

@@ -4,15 +4,16 @@ service cloud.firestore {
   
     match /users/{userId} {
        allow get: if authenticated() && request.auth.uid == userId;
+       allow write, create: if authenticated();
+       allow update, delete: if authenticated() && request.auth.uid == userId;
+    }
+    
+    match /users/{userId}/detail/{detailId} {
+       allow get, read: if authenticated();
        allow create: if authenticated();
        allow update, delete: if authenticated() && request.auth.uid == userId;
     }
 
-    match /users/{userId}/detail {
-       allow get: if authenticated() && request.auth.uid == userId;
-       allow create: if authenticated();
-       allow update, delete: if authenticated() && request.auth.uid == userId;
-    }
 
     match /users/{userId}/products/{productId} {
       allow get: if authenticated() && request.auth.uid == userId;

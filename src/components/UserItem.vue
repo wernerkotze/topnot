@@ -1,26 +1,26 @@
 <template>
-<v-badge>Test </v-badge>
- <!-- <div class="user-item">
+  <div class="user-item">
     <router-link
       class="user-link"
-      :to="{ name: 'user', params: { id: data.id } }"
+      :to="{ name: 'users', params: { id: detaildata } }"
     >
-      #{{ index }} {{ data.name }}
+      #{{ index }} {{ detaildata.name }}
     </router-link>
+     
     <div
       v-if="!disableActions"
       class="delete-btn"
-      @click="$emit('deleteUser', data.id)"
+      @click="$emit('deleteUser', detaildata.detail.id)"
     >
       {{ isUserDeletionPending ? 'delete in progress...' : 'delete' }}
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script>
 export default {
-  props: {
-    data: Object,
+    props: {
+    detaildata: Object,
     index: Number,
     isUserDeletionPending: Boolean,
     disableActions: Boolean
