@@ -1,5 +1,5 @@
 export default {
-  users: null,
+  users: [],
   userDetailToCreate: {},
   userDeletionPending: [],
   userCreationPending: false

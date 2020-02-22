@@ -5,8 +5,8 @@ export default {
     (state.userDetailToCreate = userDetailToCreate),
 
   /* Products */
-  setProducts: (state, products) => (state.products = products),
-  addProduct: (state, product) => state.products.push(product),
+  setUsers: (state, users) => (state.users = users),
+  addUserDetail: (state, user) => state.users.push(user),
   removeProductById: (state, productId) => {
     const index = state.products.findIndex(product => product.id === productId)
     state.products.splice(index, 1)
@@ -21,6 +21,6 @@ export default {
   },
 
   /* Product creation */
-  setProductCreationPending: (state, value) =>
-    (state.productCreationPending = value)
+  setUserCreationPending: (state, value) =>
+    (state.userCreationPending = value)
 }

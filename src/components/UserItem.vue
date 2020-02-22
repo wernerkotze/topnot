@@ -1,5 +1,6 @@
 <template>
-  <div class="user-item">
+<v-badge>Test </v-badge>
+ <!-- <div class="user-item">
     <router-link
       class="user-link"
       :to="{ name: 'user', params: { id: data.id } }"
@@ -13,7 +14,7 @@
     >
       {{ isUserDeletionPending ? 'delete in progress...' : 'delete' }}
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -21,7 +22,7 @@ export default {
   props: {
     data: Object,
     index: Number,
-    isProductDeletionPending: Boolean,
+    isUserDeletionPending: Boolean,
     disableActions: Boolean
   }
 }

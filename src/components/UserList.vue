@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p v-if="users === null" class="infos-label">Loading...</p>
-    <p v-if="users && !users.length" class="infos-label">
+    <p v-if="users === null" class="infos-label">Loading... </p>
+    <p v-if="users.detail && !users.detail.length" class="infos-label">
       You don't have any product yet
     </p>
     <product-item
@@ -14,6 +14,7 @@
       :data="user"
       @deleteUser="deleteUserDetail"
     ></product-item>
+    <user-item></user-item>
   </div>
 </template>
 

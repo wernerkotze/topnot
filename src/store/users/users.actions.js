@@ -1,32 +1,32 @@
-import UsersDetailDB from '@/firebase/users-detail-db'
+import UserDetailDB from '@/firebase/users-detail-db'
 
 export default {
   /**
    * Fetch products of current loggedin user
    */
-  getUsers: async ({ rootState, commit }) => {
-    const UsersDetailDB = new UsersDetailDB(rootState.authentication.user.id)
+  getUserDetail: async ({ rootState, commit }) => {
+    const usersDetailDB = new UserDetailDB(rootState.authentication.user.id)
 
-    const users = await UsersDetailDB.readAll()
-    commit('setUsers', users)
+    const users = await usersDetailDB.readAll()
+    commit('setUserDetail', users)
   },
 
   /**
    * Create a product for current loggedin user
    */
   createUser: async ({ commit, rootState }, user) => {
-    const UsersDetailDB = new UsersDetailDB(rootState.authentication.user.id)
+    const usersDetailDB = new UserDetailDB(rootState.authentication.user.id)
 
     commit('setUserCreationPending', true)
-    const createdUser = await UsersDetailDB.create(user)
-    commit('addUser', createdUser)
+    const createdUser = await usersDetailDB.create(user)
+    commit('addUserDetail', createdUser)
     commit('setUserCreationPending', false)
   },
 
   /**
    * Create a new product for current loggedin user and reset product name input
    */
-  triggerAddUser: ({ dispatch, state, commit }) => {
+  triggerAddUserAction: ({ dispatch, state, commit }) => {
     if (state.userDetailToCreate === '') return
 
     const user = { name: state.userDetailToCreate }

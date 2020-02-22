@@ -4,7 +4,13 @@ service cloud.firestore {
   
     match /users/{userId} {
        allow get: if authenticated() && request.auth.uid == userId;
-       allow create: if authenticated() && request.auth.uid == userId;
+       allow create: if authenticated();
+       allow update, delete: if authenticated() && request.auth.uid == userId;
+    }
+
+    match /users/{userId}/detail {
+       allow get: if authenticated() && request.auth.uid == userId;
+       allow create: if authenticated();
        allow update, delete: if authenticated() && request.auth.uid == userId;
     }
 
