@@ -2,15 +2,15 @@
   <div class="user-item">
     <router-link
       class="user-link"
-      :to="{ name: 'users', params: { id: detaildata } }"
+      :to="{ name: 'allusers', params: { id: allusers } }"
     >
-      #{{ index }} {{ detaildata.name }}
+      #{{ index }} {{ allusers.id }}
     </router-link>
      
     <div
       v-if="!disableActions"
       class="delete-btn"
-      @click="$emit('deleteUser', detaildata.detail.id)"
+      @click="$emit('deleteUser', allusers.id)"
     >
       {{ isUserDeletionPending ? 'delete in progress...' : 'delete' }}
     </div>
@@ -20,7 +20,7 @@
 <script>
 export default {
     props: {
-    detaildata: Object,
+    allusers: Object,
     index: Number,
     isUserDeletionPending: Boolean,
     disableActions: Boolean

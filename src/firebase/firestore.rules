@@ -13,6 +13,12 @@ service cloud.firestore {
        allow create: if authenticated();
        allow update, delete: if authenticated() && request.auth.uid == userId;
     }
+    
+    match /users {
+       allow get, read: if authenticated();
+       allow create: if authenticated();
+       allow update, delete: if authenticated() && request.auth.uid == userId;
+    }
 
 
     match /users/{userId}/products/{productId} {

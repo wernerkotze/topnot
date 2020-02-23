@@ -1,4 +1,5 @@
 import UserDetailDB from '@/firebase/users-detail-db'
+import UsersDB from '@/firebase/users-db'
 
 export default {
   /**
@@ -9,7 +10,17 @@ export default {
 
     const users = await usersDetailDB.readAll()
     commit('setUserDetail', users)
+
   },
+
+  getAllUsers: async ({rootState, commit}) => {
+    const allusersDb = new UsersDB(rootState.authentication.user.id)
+
+    const allusers = await allusersDb.readAll()
+    commit('setAllUsers', allusers)
+    console.log('heres rootState after!', rootState)
+  },
+
 
   /**
    * Create a product for current loggedin user

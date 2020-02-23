@@ -1,27 +1,16 @@
 <template>
   <div>
-    <p v-if="users === null" class="infos-label">Loading... </p>
-    <p v-if="users.detail && !users.detail.length" class="infos-label">
-      You don't have any product yet
+    <p v-if="allusers === null" class="infos-label">Loading... </p>
+      <p v-if="allusers && !allusers.length" class="infos-label">
+      Users not found...
     </p>
-   <!-- <product-item
-      v-for="(user, index) in users"
-      :key="user.id"
-      class="user-row"
-      :index="index"
-      :is-user-deletion-pending="isUserDeletionPending(user.id)"
-      :disable-actions="!networkOnLine"
-      :data="user"
-      @deleteUser="deleteUserDetail"
-    ></product-item>-->
     <user-item
-     v-for="(user, index) in users.detail"
+     v-for="(user, index) in allusers"
       :key="user.id"
       class="user-row"
       :index="index"
-      :is-user-deletion-pending="isUserDeletionPending(user.id)"
       :disable-actions="!networkOnLine"
-      :data="user"
+      :data="user.id"
       @deleteUser="deleteUserDetail"
     ></user-item>
   </div>
@@ -34,8 +23,8 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   components: { UserItem },
   computed: {
-    ...mapGetters('users', ['isUserDeletionPending']),
-    ...mapState('users', ['users']),
+    ...mapGetters('users', 'allusers', ['isUserDeletionPending']),
+    ...mapState('users', ['allusers']),
     ...mapState('app', ['networkOnLine'])
   },
   methods: mapActions('users', ['deleteUserDetail'])

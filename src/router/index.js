@@ -76,6 +76,16 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "client-chunk-product-details" */ '@/views/Product.vue')
     },
+    {
+      path: '/allusers',
+      name: 'allusers',
+      meta: {
+        authNotRequired: true
+      },
+      component: () => 
+        import('@/views/AllUsers.vue')
+    },
+
     { path: '*', redirect: '/home' }
   ]
 })
