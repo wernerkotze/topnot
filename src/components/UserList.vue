@@ -1,9 +1,6 @@
 <template>
   <div>
-    <p v-if="allusers === null" class="infos-label">Loading... </p>
-      <p v-if="allusers && !allusers.length" class="infos-label">
-      Users not found...
-    </p>
+    <p v-if="!allusers.length" class="infos-label">Loading... </p>
     <user-item
      v-for="(user, index) in allusers"
       :key="user.id"
