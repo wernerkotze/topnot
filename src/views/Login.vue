@@ -30,7 +30,6 @@
       v-show="user !== undefined && !user && networkOnLine"
       data-test="login-btn"
       class="login-btn"
-      @click="login"
       @click="login('email')"
     >
         Login with email
@@ -113,8 +112,7 @@ export default {
             this.loginError(error.message)
             // ...
           })
-      }
-
+        }
     }
   }
 }
