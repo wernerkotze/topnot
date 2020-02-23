@@ -10,7 +10,7 @@
       class="user-row"
       :index="index"
       :disable-actions="!networkOnLine"
-      :data="user.id"
+      :data="user"
       @deleteUser="deleteUserDetail"
     ></user-item>
   </div>
@@ -23,7 +23,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   components: { UserItem },
   computed: {
-    ...mapGetters('users', 'allusers', ['isUserDeletionPending']),
+    ...mapGetters('users', ['isUserDeletionPending']),
     ...mapState('users', ['allusers']),
     ...mapState('app', ['networkOnLine'])
   },
