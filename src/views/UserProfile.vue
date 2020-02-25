@@ -81,10 +81,10 @@
                             </v-col>
                             <v-col cols="12" sm="6">
                               <gmap-autocomplete
-                                @place_changed="setPlace"
                                 class="geosuggest-input"
-                                :class="`elevation-${3}`" 
-                                placeholder="Enter address"
+                                :class="`elevation-${3}`"
+                                placeholder="Enter address" 
+                                @place_changed="setPlace"
                               >
                               </gmap-autocomplete>
                             </v-col>

@@ -9,23 +9,32 @@
         <v-list-item>  
           <v-list-item-avatar>
              <v-img
-              v-if="isUserLoggedIn && networkOnLine"
+              v-if="isUserLoggedIn && networkOnLine && user"
               class="user-picture can-hide"
               :src="user.photoURL"
               alt="Avatar"
             >
             </v-img>
             <v-img
-              v-if="!isUserLoggedIn && !networkOnLine"
+              v-if="!isUserLoggedIn"
               class="user-picture can-hide"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSpn1K0DuiJGSPnj3PQTFPk2SCsXK7B4K08YePvJ6GM9QVvt-gT"
               alt="Avatar"
             >
             </v-img>
           </v-list-item-avatar>
-          <v-list-item-content>
+          <v-list-item-content
+              v-if="isUserLoggedIn && networkOnLine"
+          >
             <v-list-item-title>
-              Werner Kotze
+              {{ user.displayName }}
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-content
+            v-if="!isUserLoggedIn"
+          >
+            <v-list-item-title>
+              topnot
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -40,7 +49,8 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link
+        <v-list-item v-if="isUserLoggedIn && networkOnLine"
+          link
           @click.once="logout"
         >  
           <v-list-item-action>
@@ -65,7 +75,7 @@
         </v-btn>
       <v-spacer />
       <v-toolbar-items>
-        <v-btn text v-if="!isUserLoggedIn && !networkOnLine">Sign In</v-btn>
+        <v-btn v-if="!isUserLoggedIn && !networkOnLine" text>Sign In</v-btn>
       </v-toolbar-items>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
@@ -91,8 +101,9 @@ export default {
     menuItems () {
       let menuItems = [
         {icon: 'mdi-scissors-cutting', title: 'Hairdressers', link: '/home'},
-        {icon: 'mdi-scissors-cutting', title: 'FAQs', link: '/faq'},
-        {icon: 'mdi-help-circle-outline', title: 'Terms and Conditions', link: '/terms'}
+        {icon: 'mdi-key-outline', title: 'Register', link: '/login'},
+        {icon: 'mdi-help-circle-outline', title: 'Help', link: '/help'},
+        {icon: 'mdi-file-document-box-search-outline', title: 'Terms & Conditions', link: '/terms'}
       ]
       if (this.isUserLoggedIn) {
         menuItems = [

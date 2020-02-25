@@ -31,10 +31,10 @@
               > 
                 <div class="mx-4"> 
                   <gmap-autocomplete
-                    @place_changed="setPlace"
                     class="geosuggest-input"
-                    :class="`elevation-${3}`" 
-                    placeholder="Enter address"
+                    :class="`elevation-${3}`"
+                    placeholder="Enter address" 
+                    @place_changed="setPlace"
                   >
                   </gmap-autocomplete>
                 </div>
@@ -42,8 +42,8 @@
                   <v-btn
                       color="primary"
                       large
-                      @click="find"
                       width="100%"
+                      @click="find"
                     >
                       Find Hairdressers
                   </v-btn>
