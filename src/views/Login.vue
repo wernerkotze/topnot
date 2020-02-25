@@ -139,24 +139,22 @@ export default {
     display: inline-block;
     border-radius: 3px;
     border-color: #2c3e50;
-
     &:hover {
       color: $vue-color;
       border-color: $vue-color;
     }
+  }
 
-    .login-input {
-      margin-top: 10px;
-      padding-left: 5px;
-      height: 30px;
-      width: 225px;
-      outline: none;
-      font: inherit;
-      border: 1px solid;
-      border-color: #2c3e50;
-      border-radius: 3px;
-    }
-
+  .login-input {
+    margin-top: 10px;
+    padding-left: 5px;
+    height: 30px;
+    width: 225px;
+    outline: none;
+    font: inherit;
+    border: 1px solid;
+    border-color: #2c3e50;
+    border-radius: 3px;
   }
 }
 </style>

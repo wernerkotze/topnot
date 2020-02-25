@@ -9,7 +9,7 @@
         <v-list-item>  
           <v-list-item-avatar>
              <v-img
-              v-if="isUserLoggedIn && networkOnLine"
+              v-if="isUserLoggedIn && networkOnLine && user"
               class="user-picture can-hide"
               :src="user.photoURL"
               alt="Avatar"
@@ -27,7 +27,7 @@
               v-if="isUserLoggedIn && networkOnLine"
           >
             <v-list-item-title>
-              Werner Kotze
+              {{ user.displayName }}
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content

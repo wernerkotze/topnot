@@ -1,8 +1,6 @@
 <template>
     <v-app id="inspire">
       <nav-bar></nav-bar>
-       <user-list></user-list>
-       <add-user v-if="networkOnLine"></add-user>
         <v-content>
             <v-container fluid>
                 <v-row justify-center>
@@ -80,13 +78,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import UserList from '@/components/UserList'
-import AddUser from '@/components/AddUser'
 import NavBar from '@/components/NavBar' 
 // import { mapGetters } from 'vuex'
 
   export default {
-    components: { NavBar, UserList, AddUser},
+    components: { NavBar },
     data () {
         return {
           position: {lat: 0.0, lng: 0.0},
