@@ -1,5 +1,6 @@
 <template>
     <v-app id="inspire">
+      <nav-bar></nav-bar>
         <v-content>
             <v-container fluid>
                 <v-row justify-center>
@@ -76,10 +77,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import NavBar from '@/components/NavBar' 
+// import { mapGetters } from 'vuex'
 
-// import { mapGetters } from 'vuex' 
-  
   export default {
+    components: { NavBar },
     data () {
         return {
           position: {lat: 0.0, lng: 0.0},
@@ -99,6 +102,7 @@
       resultList () {
         return this.$store.state.maps.resultList;
       },
+      ...mapState('app', ['networkOnLine'])
       // ...mapState('products', ['products']),
     },
     mounted () {

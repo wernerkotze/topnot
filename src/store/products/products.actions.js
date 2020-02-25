@@ -1,14 +1,7 @@
 import UserProductsDB from '@/firebase/user-products-db'
 
 export default {
-
-  locate ({commit}, payload) {
-    commit('setLong', payload.long);
-    commit('setLat' , payload.lat);
-    commit('setAddress', payload.address);
-    commit('setRoute');
-  },
-
+  
   /**
    * Fetch products of current loggedin user
    */

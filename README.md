@@ -1,5 +1,29 @@
-# My bento-starter project
+# topnot
 
-## Documentation
+![Vue](https://img.shields.io/badge/vue-2.2.4-green.svg)
+![Firebase](https://img.shields.io/badge/google-firebase-orange.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Documentation available :point_right: [here](https://bento-starter.netlify.com/)
+## Getting Started
+
+### Requirements
+
+- Ubuntu / macOS / Windows  
+
+- [Node.js](https://nodejs.org/en/)
+
+### Setup 
+
+  + `npm install`
+
+  + `npm run serve`
+
+### If the above does not work 
+
+`npm install firebase --force`
+
+### Basic Overview
+
+The objective of this application is to lower the percentage of bad haircut around the world. The application 
+finds all available hairdressers in a 5km radius and displays the most popular personal in the area. Users 
+can find hairdressers by area, price, style etc. 
