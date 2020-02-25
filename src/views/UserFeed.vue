@@ -17,10 +17,10 @@
                                     style="height: 300px;"
                                   > 
                                     <v-card
-                                      max-width="344"
-                                      class="mx-auto mb-4"
                                       v-for="result of resultList"
                                       :key="result.id"
+                                      max-width="344"
+                                      class="mx-auto mb-4"
                                     >
                                       <v-list-item>
                                         <v-list-item-avatar color="grey">

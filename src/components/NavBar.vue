@@ -49,9 +49,9 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link
+        <v-list-item v-if="isUserLoggedIn && networkOnLine"
+          link
           @click.once="logout"
-          v-if="isUserLoggedIn && networkOnLine"
         >  
           <v-list-item-action>
             <v-icon>mdi-logout-variant</v-icon>
@@ -75,7 +75,7 @@
         </v-btn>
       <v-spacer />
       <v-toolbar-items>
-        <v-btn text v-if="!isUserLoggedIn && !networkOnLine">Sign In</v-btn>
+        <v-btn v-if="!isUserLoggedIn && !networkOnLine" text>Sign In</v-btn>
       </v-toolbar-items>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>

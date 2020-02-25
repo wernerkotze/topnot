@@ -50,6 +50,7 @@
 import { mapState, mapMutations } from 'vuex'
 import { isNil } from 'lodash'
 import firebase from 'firebase/app'
+
 export default {
   data: () => ({
     registerError: null,
@@ -93,15 +94,15 @@ export default {
       this.registerError = null
       this.setUser(undefined)
       // set the displayName and photoURL in scope.
-      const displayName = this.displayName
-      const photoURL = this.photoURL
+      const {displayName} = this
+      const {photoURL} = this
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(function(newUser) {
           newUser.user.updateProfile({
-            displayName: displayName,
-            photoURL: photoURL
+            displayName,
+            photoURL
           })
         })
         .catch(function(error) {
